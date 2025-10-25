@@ -1,72 +1,260 @@
-/* style.css: Layouts, components and page-specific styles */
-@import 'design-system.css';
+:root{
+  /* === PALETA (mínimo 8 cores) - com variações e tokens semânticos === */
+  /* Primárias */
+  --color-primary-50:  #eaf2ff;
+  --color-primary-100: #d6e6ff;
+  --color-primary-300: #80aaff;
+  --color-primary-500: #0b5cff; /* core primary */
+  --color-primary-700: #0849d1;
+  --color-primary-900: #052a8a;
 
-.header-inner{display:flex;align-items:center;justify-content:space-between;padding:var(--space-3) 0}
-.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--color-neutral-900)}
-.brand img{width:48px;height:48px}
-.brand-name{font-weight:700;font-size:var(--fs-sm)}
+  /* Secundárias / Accent */
+  --color-secondary-50:  #e8fffb;
+  --color-secondary-300: #4fe3c9;
+  --color-secondary-500: #00bfa6;
+  --color-secondary-700: #00997f;
 
-/* NAVIGATION */
+  --color-accent-500:   #ff7a59;
+  --color-accent-700:   #ff5a3a;
+
+  /* Neutras (grayscale) */
+  --neutral-100: #fbfcfe;
+  --neutral-200: #f4f6f8;
+  --neutral-300: #eef3fb;
+  --neutral-400: #e6eef8;
+  --neutral-500: #d1dbe6;
+  --neutral-600: #9aa6b3;
+  --neutral-700: #6b7280;
+  --neutral-800: #24303a;
+  --neutral-900: #0b1220;
+
+  /* Feedback semantic */
+  --color-success: #16a34a;
+  --color-warning: #f59e0b;
+  --color-danger:  #ef4444;
+  --color-info:    #0ea5e9;
+
+  /* Surface / Elevation */
+  --surface-0: #ffffff;
+  --surface-1: #f8fbff;
+  --surface-2: #ffffff;
+
+  /* === Semantics (aliases para uso no CSS) === */
+  --bg-page: var(--neutral-100);
+  --bg-surface: var(--surface-1);
+  --text-primary: var(--neutral-900);
+  --text-secondary: var(--neutral-700);
+  --muted: var(--neutral-600);
+
+  --brand: var(--color-primary-500);
+  --brand-strong: var(--color-primary-700);
+  --brand-weak: var(--color-primary-100);
+
+  --success: var(--color-success);
+  --warning: var(--color-warning);
+  --danger: var(--color-danger);
+  --info: var(--color-info);
+
+  /* === TYPOGRAPHY (≥5 sizes) === */
+  --font-family-sans: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --fs-xxl: 40px;
+  --fs-xl: 28px;
+  --fs-lg: 20px;
+  --fs-md: 16px;
+  --fs-sm: 14px;
+  --fs-xs: 12px;
+
+  /* === SPACING (modular: 8,16,24,32,48,64) === */
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 48px;
+  --space-6: 64px;
+
+  /* === GRID SYSTEM (12 columns) === */
+  --container-max: 1200px;
+  --gutter: var(--space-2);
+
+  /* Shadows / Focus tokens */
+  --shadow-sm: 0 4px 12px rgba(11,18,30,0.06);
+  --shadow-md: 0 12px 30px rgba(11,18,30,0.08);
+  --focus-ring: 0 0 0 4px color-mix(in srgb, var(--brand) 18%, transparent);
+}
+
+/* === BASE & RESET === */
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  font-family:var(--font-family-sans);
+  color:var(--text-primary);
+  background: linear-gradient(180deg, var(--bg-page), #ffffff);
+  -webkit-font-smoothing:antialiased;
+  line-height:1.5;
+  margin:0;
+}
+
+/* === CONTAINER === */
+.container{
+  width:100%;
+  max-width:var(--container-max);
+  margin:0 auto;
+  padding:0 calc(var(--gutter));
+}
+
+/* === GRID 12-col customizado === */
+.grid{display:grid;grid-template-columns:repeat(12, 1fr);gap:var(--gutter)}
+.col-1{grid-column:span 1}
+.col-2{grid-column:span 2}
+.col-3{grid-column:span 3}
+.col-4{grid-column:span 4}
+.col-5{grid-column:span 5}
+.col-6{grid-column:span 6}
+.col-7{grid-column:span 7}
+.col-8{grid-column:span 8}
+.col-9{grid-column:span 9}
+.col-10{grid-column:span 10}
+.col-11{grid-column:span 11}
+.col-12{grid-column:span 12}
+
+/* === FLEX UTILITIES (para componentes internos) === */
+.d-flex{display:flex}
+.flex-col{display:flex;flex-direction:column}
+.items-center{align-items:center}
+.justify-between{justify-content:space-between}
+.gap-8{gap:8px}
+.gap-16{gap:16px}
+
+/* === BUTTONS — estados: hover, focus, active, disabled === */
+.btn{
+  display:inline-flex;align-items:center;gap:8px;padding:0 var(--space-2);height:40px;border-radius:10px;border:1px solid transparent;background:var(--surface-2);color:var(--text-primary);font-weight:600;cursor:pointer;transition:all .16s ease;box-shadow:var(--shadow-sm);
+}
+.btn:focus{outline:none;box-shadow:var(--focus-ring)}
+/* Primary */
+.btn-primary{
+  background:linear-gradient(90deg,var(--brand),var(--brand-strong));
+  color:white;
+  border-color:transparent;
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.btn-primary:active{transform:translateY(0) scale(.997)}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed;box-shadow:none}
+
+/* Ghost / Outline */
+.btn-ghost{background:transparent;border:1px solid transparent;color:var(--brand)}
+.btn-outline{background:transparent;border:1px solid var(--neutral-300);color:var(--text-primary)}
+.btn-small{height:32px;padding:0 12px;font-size:var(--fs-sm);border-radius:8px}
+
+/* Accessibility focus visible only */
+:focus:not(:focus-visible){outline: none}
+
+/* === BADGES / TAGS === */
+.badge{
+  display:inline-block;padding:6px 10px;border-radius:999px;font-size:13px;background:var(--neutral-100);border:1px solid var(--neutral-300);color:var(--text-secondary);
+}
+.badge--primary{background:linear-gradient(90deg,var(--brand-weak),var(--brand));color:white;border:none}
+.badge--success{background:var(--success);color:white;border:none}
+.badge--muted{background:transparent;border:1px solid var(--neutral-300);color:var(--text-secondary)}
+
+/* === CARDS (responsivos) === */
+.card{
+  background:var(--surface-2);
+  border-radius:12px;
+  padding:var(--space-3);
+  box-shadow:var(--shadow-sm);
+  transition:transform .18s ease,box-shadow .18s ease;
+}
+.card:hover{transform:translateY(-6px);box-shadow:var(--shadow-md)}
+
+/* === FORMS — estilizadas + validação visual === */
+.form input, .form textarea, .form select{
+  width:100%;
+  padding:10px;border-radius:8px;border:1px solid var(--neutral-300);
+  background:var(--surface-2);
+  transition:box-shadow .12s ease, border-color .12s ease;
+}
+.form input:focus, .form textarea:focus{
+  border-color:var(--brand);
+  box-shadow:var(--focus-ring);
+}
+.form .form-error{color:var(--danger);font-size:13px;height:18px}
+.form input[aria-invalid="true"], .form textarea[aria-invalid="true"]{
+  border-color:var(--danger);
+  box-shadow:0 6px 20px rgba(239,68,68,.06);
+}
+
+/* === TOAST / ALERTS / MODALS (feedback components) === */
+.toast{
+  position:fixed;right:var(--space-2);bottom:var(--space-2);min-width:240px;padding:12px 16px;border-radius:8px;background:var(--brand);color:white;transform:translateY(12px);opacity:0;pointer-events:none;transition:all .28s cubic-bezier(.2,.9,.3,1);z-index:9999;
+}
+.toast.show{opacity:1;transform:translateY(0);pointer-events:auto}
+
+/* Simple alert variants */
+.alert{padding:12px 16px;border-radius:8px;color:white}
+.alert--success{background:linear-gradient(90deg,var(--success),color-mix(in srgb,var(--success) 70%, black))}
+.alert--warning{background:linear-gradient(90deg,var(--warning),color-mix(in srgb,var(--warning) 70%, black))}
+.alert--danger{background:linear-gradient(90deg,var(--danger),color-mix(in srgb,var(--danger) 70%, black))}
+
+/* Modal base (minimal) */
+.modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(11,18,30,.45);z-index:9998}
+.modal .modal-content{background:var(--surface-2);padding:var(--space-3);border-radius:12px;max-width:720px;width:100%}
+.modal.show{display:flex}
+
+/* === NAVIGATION — submenu dropdown + mobile hamburger === */
 .main-nav{position:relative}
 .menu{list-style:none;display:flex;align-items:center;gap:12px;margin:0;padding:0}
-.menu a{padding:8px 12px;border-radius:8px;text-decoration:none;color:var(--color-neutral-700);font-weight:600}
-.menu a:hover, .menu a:focus{background:color-mix(in srgb,var(--color-primary) 10%, transparent);color:var(--color-primary)}
+.menu a{padding:8px 12px;border-radius:8px;text-decoration:none;color:var(--text-secondary);font-weight:600}
+.menu a:hover, .menu a:focus{background:color-mix(in srgb,var(--brand) 10%, transparent);color:var(--brand)}
 .has-submenu{position:relative}
-.submenu{position:absolute;left:0;top:110%;background:#fff;min-width:200px;padding:8px;border-radius:8px;box-shadow:0 8px 24px rgba(11,18,30,.08);display:none;z-index:40}
+.submenu{position:absolute;left:0;top:110%;background:var(--surface-2);min-width:220px;padding:8px;border-radius:8px;box-shadow:var(--shadow-md);display:none;z-index:40}
 .has-submenu:focus-within .submenu, .has-submenu:hover .submenu{display:block}
-.submenu li{padding:6px 0}
 
-/* Mobile nav */
+/* Mobile nav: hamburger toggle */
 .nav-toggle{display:none;background:transparent;border:0}
-.hamburger{width:22px;height:2px;background:var(--color-neutral-700);position:relative;display:inline-block}
-.hamburger::before,.hamburger::after{content:'';position:absolute;left:0;width:22px;height:2px;background:var(--color-neutral-700);transition:transform .18s ease}
+.hamburger{width:22px;height:2px;background:var(--text-secondary);position:relative;display:inline-block}
+.hamburger::before,.hamburger::after{content:'';position:absolute;left:0;width:22px;height:2px;background:var(--text-secondary);transition:transform .18s ease}
 .hamburger::before{top:-6px}
 .hamburger::after{top:6px}
 
-/* Hero */
-.hero{padding:var(--space-5) 0}
-.hero-content h1{font-size:var(--fs-xl);margin:0 0 var(--space-2)}
-.lead{font-size:var(--fs-md);color:var(--color-neutral-700)}
-.hero-illustration img{max-width:100%;display:block}
+/* === BREAKPOINTS (mínimo 5 bem definidos) === */
+/* desktop large */
+@media (min-width:1400px){
+  :root{--container-max:1400px}
+}
 
-/* Features */
-.features h2{margin-bottom:var(--space-3);font-size:var(--fs-lg)}
-.card .badge{margin-top:var(--space-2);display:inline-block}
+/* desktop */
+@media (max-width:1199px){
+  :root{--container-max:1000px}
+}
 
-/* Projects */
-.project-card{display:flex;flex-direction:column;gap:12px}
-.card-img{width:100%;height:160px;object-fit:cover;border-radius:8px;background:linear-gradient(180deg,var(--color-neutral-100),#fff);display:block}
+/* tablet landscape */
+@media (max-width:991px){
+  .grid{grid-template-columns:repeat(8,1fr)}
+  /* exemplify component adaptation */
+}
 
-/* Forms */
-.form{background:linear-gradient(180deg,#fff, #fbfbff);padding:var(--space-3);border-radius:12px}
-.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-2)}
-.form-group{display:flex;flex-direction:column;gap:8px}
-.form-group.full{grid-column:span 2}
-.form input, .form textarea{padding:10px;border-radius:8px;border:1px solid #e6eef8}
-.form input:focus, .form textarea:focus{border-color:var(--color-primary);box-shadow:0 6px 20px rgba(11,92,255,.06);outline:none}
-.form-error{color:var(--color-danger);font-size:13px;height:16px}
-
-/* Footer */
-.site-footer{padding:var(--space-3);border-top:1px solid #eef3fb;margin-top:var(--space-4);text-align:center}
-
-/* Toast */
-.toast{position:fixed;right:var(--space-2);bottom:var(--space-2);min-width:220px;padding:12px 16px;border-radius:8px;background:rgba(11,92,255,.95);color:white;transform:translateY(12px);opacity:0;pointer-events:none;transition:all .28s cubic-bezier(.2,.9,.3,1)}
-.toast.show{opacity:1;transform:translateY(0);pointer-events:auto}
-
-/* Responsive adjustments */
+/* tablet portrait */
 @media (max-width:767px){
-  .menu{display:none;position:absolute;right:var(--space-2);top:100%;background:#fff;padding:var(--space-3);box-shadow:0 12px 40px rgba(11,18,30,.06);border-radius:12px}
+  .grid{grid-template-columns:repeat(4,1fr)}
+  .col-7{grid-column:span 4}
+  .col-5{grid-column:span 4}
+  .menu{display:none}
   .nav-toggle{display:inline-flex}
-  .form-grid{grid-template-columns:1fr}
-  .hero{padding:var(--space-4) 0}
-  .brand-name{display:none}
-  .hero-content{padding-right:var(--space-3)}
 }
 
-/* Small animation */
-@keyframes float {
-  from {transform:translateY(0)}
-  50%{transform:translateY(-6px)}
-  to{transform:translateY(0)}
+/* mobile small */
+@media (max-width:575px){
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .form-grid{grid-template-columns:1fr}
 }
-.card-img{animation:float 6s ease-in-out infinite}
+
+/* very small phones */
+@media (max-width:399px){
+  .grid{grid-template-columns:repeat(1,1fr)}
+}
+
+/* small utility classes */
+.text-center{text-align:center}
+.mb-16{margin-bottom:var(--space-2)}
+"""
+
